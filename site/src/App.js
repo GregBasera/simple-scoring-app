@@ -25,7 +25,7 @@ function App() {
     <div className="container my-3">
       <div className="input-group mb-3">
         <input type="text" className="form-control" placeholder="ID here" value={id} onChange={handleIDchange} />
-        <button className="btn btn-outline-info" type="button" onClick={checkClicked}>
+        <button className="btn btn-info" type="button" onClick={checkClicked}>
           Check
         </button>
       </div>

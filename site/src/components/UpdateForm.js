@@ -1,17 +1,33 @@
 import React, { useState } from "react";
+import Axios from "axios";
 import TextField from "./TextField";
+import { AddCandidate } from "../endpoints";
 
 export default function UpdateForm(props) {
   const [cand, setCand] = useState({ ...props.cand, panel: "", score: "" });
   const [staging, setStaging] = useState({});
+  const [sendStatus, setSendStatus] = useState("");
 
   const handleChange = (e) => {
     setCand({ ...cand, [e.target.placeholder]: e.target.value });
   };
   const handleReview = () => {
     let stage = {};
-    ["readable_ID", "name", "applying_for", "panel", "score"].forEach((q) => (stage[q] = cand[q]));
+    ["readable_ID", "name", "applying_for", "panel", "score"].forEach((q) => {
+      if (cand[q] !== "") {
+        stage[q] = cand[q];
+      }
+    });
     setStaging(stage);
+  };
+  const handleSend = () => {
+    Axios.post(AddCandidate, staging)
+      .then((res) => {
+        setSendStatus(res);
+      })
+      .catch((err) => {
+        console.error(err);
+      });
   };
 
   return (
@@ -36,17 +52,23 @@ export default function UpdateForm(props) {
           placeholder="preview"
           id="previewArea"
           readOnly
-          style={{ height: "150px" }}
+          style={{ height: "180px" }}
           defaultValue={Object.entries(staging).map((p) => `\n${p[0]}: ${p[1]}`)}></textarea>
         <label htmlFor="previewArea">Preview</label>
       </div>
 
       <div className="d-grid gap-2 mt-3">
-        <button className="btn btn-info" type="button" onClick={handleReview}>
+        <button className="btn btn-info" type="button" onClick={handleSend}>
           Send
         </button>
       </div>
-      {/* lul */}
+      {sendStatus === "" ? (
+        <div class="d-flex justify-content-center">
+          <div class="spinner-border spinner-border-sm" role="status"></div>
+        </div>
+      ) : (
+        sendStatus.toString()
+      )}
     </React.Fragment>
   );
 }
