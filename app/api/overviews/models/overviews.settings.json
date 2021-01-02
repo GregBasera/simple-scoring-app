@@ -1,0 +1,26 @@
+{
+  "kind": "collectionType",
+  "collectionName": "overviews",
+  "info": {
+    "name": "Overviews"
+  },
+  "options": {
+    "increments": true,
+    "timestamps": true,
+    "draftAndPublish": false
+  },
+  "attributes": {
+    "readable_ID": {
+      "type": "string",
+      "required": true
+    },
+    "name": {
+      "type": "string",
+      "required": true
+    },
+    "applying_for": {
+      "type": "string",
+      "required": true
+    }
+  }
+}
